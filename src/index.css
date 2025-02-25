@@ -1,5 +1,5 @@
-/* 必要に応じたカスタムスタイルを定義 */
-.full-height {
-    min-height: 100vh;
-    /* 画面全体の高さを確保（縦中央揃え用） */
+/* 必要に応じたカスタムスタイル */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
 }

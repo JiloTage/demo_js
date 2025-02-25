@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { Container, Typography, Paper, TextField, Button, Box } from '@mui/material';
 
 export default function ProposalDraft() {
-    // AIが生成した提案書ドラフト（ダミーテキスト）
     const initialDraft =
-        "・優遇金利を適用した預金プランの提供\n" +
-        "・迅速な審査が可能なローン商品の提案\n" +
-        "・余剰資金を活用した投資信託による資産運用提案\n";
+        "提案書タイトル：新工場建設に伴う資金調達プランご提案\n\n" +
+        "【概要】お打ち合わせ内容から、総額××円の融資枠をご提案…\n\n" +
+        "【メリット】担保要件は○○、金利優遇を最大限活用することで…\n\n" +
+        "【補助金との併用】△△省の○○助成金申請を検討\n";
 
     const [draft, setDraft] = useState(initialDraft);
     const [submitted, setSubmitted] = useState(false);
@@ -16,41 +17,47 @@ export default function ProposalDraft() {
     };
 
     return (
-        <section className="section">
-            <div className="container">
-                <h1 className="title">提案書作成</h1>
-                {!submitted ? (
-                    <>
-                        {/* 提案書ドラフトの編集エリア */}
-                        <div className="field">
-                            <label className="label">提案書ドラフト (AI生成)</label>
-                            <div className="control">
-                                <textarea
-                                    className="textarea"
-                                    rows="6"
-                                    value={draft}
-                                    onChange={e => setDraft(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        <button className="button is-link" onClick={handleSubmit}>
-                            上司にレビュー依頼
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        {/* 上司に提出後は内容を読み取り専用で表示 */}
-                        <div className="field">
-                            <label className="label">提案書ドラフト</label>
-                            <div className="control">
-                                <textarea className="textarea" rows="6" value={draft} readOnly />
-                            </div>
-                        </div>
-                        {/* 上司からのフィードバック表示 */}
-                        <p className="has-text-success">{supervisorFeedback}</p>
-                    </>
-                )}
-            </div>
-        </section>
+        <Container sx={{ mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                提案書作成
+            </Typography>
+            {!submitted ? (
+                <>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="提案書ドラフト (AI生成)"
+                            multiline
+                            rows={8}
+                            fullWidth
+                            variant="outlined"
+                            value={draft}
+                            onChange={(e) => setDraft(e.target.value)}
+                        />
+                    </Box>
+                    <Button variant="contained" onClick={handleSubmit}>
+                        上司にレビュー依頼
+                    </Button>
+                </>
+            ) : (
+                <>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="提案書ドラフト"
+                            multiline
+                            rows={8}
+                            fullWidth
+                            variant="outlined"
+                            value={draft}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                    </Box>
+                    <Typography variant="body1" color="success.main">
+                        {supervisorFeedback}
+                    </Typography>
+                </>
+            )}
+        </Container>
     );
 }

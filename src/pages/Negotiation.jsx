@@ -1,36 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Container, Typography, Paper, TextField, Box, List, ListItem, ListItemText } from '@mui/material';
+import ChatBubble from '../components/ChatBubble';
 
 export default function Negotiation() {
-    // ヒアリング項目リストとAIからの提案（ダミーデータ）
     const questions = [
         "現在、お困りの点はございますか？",
         "今後の資金計画をお聞かせください。"
     ];
-    const aiSuggestion = "顧客Aは余剰資金の運用にも関心がある可能性があります。投資商品の提案を検討してください。";
+    // 固定のチャット会話（ダミーデータ）
+    const initialMessages = [
+        { id: 1, text: "この新工場の話、類似事例はある？", isUser: true },
+        { id: 2, text: "製造業で同様に新工場資金調達を行ったB社事例。成功した融資プランは「〇〇プラン」です。", isUser: false }
+    ];
+
+    const [messages] = useState(initialMessages);
+    const [memo, setMemo] = useState('');
 
     return (
-        <section className="section">
-            <div className="container">
-                <h1 className="title">折衝実施</h1>
-                <h2 className="subtitle">ヒアリング項目</h2>
-                <ol style={{ marginBottom: '1em' }}>
-                    {questions.map((q, idx) => (
-                        <li key={idx}>{q}</li>
-                    ))}
-                </ol>
-                {/* メモ入力欄 */}
-                <div className="field">
-                    <label className="label">面談メモ</label>
-                    <div className="control">
-                        <textarea className="textarea" placeholder="メモを入力"></textarea>
-                    </div>
-                </div>
-                {/* AIからの追加提案表示 */}
-                <article className="message is-info">
-                    <div className="message-header">AIからの提案</div>
-                    <div className="message-body">{aiSuggestion}</div>
-                </article>
-            </div>
-        </section>
+        <Container sx={{ mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                折衝実施
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+                ヒアリング項目
+            </Typography>
+            <List>
+                {questions.map((q, idx) => (
+                    <ListItem key={idx}>
+                        <ListItemText primary={`${idx + 1}. ${q}`} />
+                    </ListItem>
+                ))}
+            </List>
+            <Box sx={{ my: 2 }}>
+                <TextField
+                    label="面談メモ"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    value={memo}
+                    onChange={(e) => setMemo(e.target.value)}
+                />
+            </Box>
+            <Paper sx={{ p: 2, mb: 2 }}>
+                <Typography variant="subtitle1">AIチャット</Typography>
+                {messages.map((msg) => (
+                    <ChatBubble key={msg.id} message={msg.text} isUser={msg.isUser} />
+                ))}
+            </Paper>
+        </Container>
     );
 }

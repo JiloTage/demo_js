@@ -1,30 +1,32 @@
 import React from 'react';
+import { Container, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 export default function FollowUp({ tasks }) {
-    // フォローアップ種別のタスクのみ抽出
     const followUps = tasks.filter(t => t.type === 'followup');
 
     return (
-        <section className="section">
-            <div className="container">
-                <h1 className="title">フォローアップ</h1>
-                <table className="table is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th>期限</th>
-                            <th>内容</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <Container sx={{ mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                フォローアップ
+            </Typography>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>期限</TableCell>
+                            <TableCell>内容</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {followUps.map(task => (
-                            <tr key={task.id}>
-                                <td>{task.due}</td>
-                                <td>{task.title}</td>
-                            </tr>
+                            <TableRow key={task.id}>
+                                <TableCell>{task.due}</TableCell>
+                                <TableCell>{task.title}</TableCell>
+                            </TableRow>
                         ))}
-                    </tbody>
-                </table>
-            </div>
-        </section>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Container>
     );
 }

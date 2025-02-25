@@ -9,8 +9,9 @@ import NeedsSolution from './pages/NeedsSolution.jsx';
 import ProposalDraft from './pages/ProposalDraft.jsx';
 import ProposalDelivery from './pages/ProposalDelivery.jsx';
 import FollowUp from './pages/FollowUp.jsx';
+import ChatAssistant from './pages/ChatAssistant.jsx';
 
-// ダミーデータ: タスクとアラートの初期一覧
+// ダミーデータ：タスクとアラートの初期一覧
 const tasks = [
     { id: 1, title: "顧客A: 商談準備を実施", type: "task" },
     { id: 2, title: "顧客A: 提案書ドラフトを作成", type: "task" },
@@ -35,22 +36,18 @@ export default function App() {
         <>
             <Navbar />
             <Routes>
-                {/* ログイン後、デフォルトでダッシュボードへ */}
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route
-                    path="/dashboard"
-                    element={<Dashboard userName={userName} tasks={tasks} alerts={alerts} />}
-                />
+                <Route path="/dashboard" element={<Dashboard userName={userName} tasks={tasks} alerts={alerts} />} />
                 <Route path="/preparation" element={<Preparation />} />
                 <Route path="/negotiation" element={<Negotiation />} />
                 <Route path="/needs" element={<NeedsSolution />} />
                 <Route path="/proposal" element={<ProposalDraft />} />
                 <Route path="/delivery" element={<ProposalDelivery />} />
                 <Route path="/followups" element={<FollowUp tasks={tasks} />} />
+                <Route path="/chat" element={<ChatAssistant />} />
             </Routes>
         </>
     ) : (
-        // ログインしていない場合はログインページを表示
         <Login onLogin={handleLogin} />
     );
 }

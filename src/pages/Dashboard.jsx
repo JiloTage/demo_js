@@ -1,41 +1,53 @@
 import React from 'react';
+import { Container, Typography, Paper, List, ListItem, ListItemText, Box } from '@mui/material';
 
 export default function Dashboard({ userName, tasks, alerts }) {
     return (
-        <section className="section">
-            <div className="container">
-                <h1 className="title">ダッシュボード</h1>
-                {userName && (
-                    <h2 className="subtitle">ようこそ、{userName}さん</h2>
-                )}
-                {/* 担当者のタスク一覧 */}
-                <nav className="panel">
-                    <p className="panel-heading">タスク</p>
-                    {tasks.filter(t => t.type === 'task').map(task => (
-                        <div key={task.id} className="panel-block">
-                            {task.title}
-                        </div>
-                    ))}
-                </nav>
-                {/* フォローアップ（今後の予定）一覧 */}
-                <nav className="panel">
-                    <p className="panel-heading">フォローアップ</p>
-                    {tasks.filter(t => t.type === 'followup').map(task => (
-                        <div key={task.id} className="panel-block">
-                            {task.due ? `${task.due}: ${task.title}` : task.title}
-                        </div>
-                    ))}
-                </nav>
-                {/* アラート（通知）一覧 */}
-                <nav className="panel">
-                    <p className="panel-heading">アラート</p>
-                    {alerts.map((alert, idx) => (
-                        <div key={idx} className="panel-block">
-                            {alert}
-                        </div>
-                    ))}
-                </nav>
-            </div>
-        </section>
+        <Container sx={{ mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                ダッシュボード
+            </Typography>
+            {userName && (
+                <Typography variant="subtitle1" gutterBottom>
+                    ようこそ、{userName}さん
+                </Typography>
+            )}
+            <Box sx={{ mb: 3 }}>
+                <Paper sx={{ p: 2 }}>
+                    <Typography variant="h6">タスク</Typography>
+                    <List>
+                        {tasks.filter(t => t.type === 'task').map(task => (
+                            <ListItem key={task.id}>
+                                <ListItemText primary={task.title} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Paper>
+            </Box>
+            <Box sx={{ mb: 3 }}>
+                <Paper sx={{ p: 2 }}>
+                    <Typography variant="h6">フォローアップ</Typography>
+                    <List>
+                        {tasks.filter(t => t.type === 'followup').map(task => (
+                            <ListItem key={task.id}>
+                                <ListItemText primary={task.due ? `${task.due}: ${task.title}` : task.title} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Paper>
+            </Box>
+            <Box>
+                <Paper sx={{ p: 2 }}>
+                    <Typography variant="h6">アラート</Typography>
+                    <List>
+                        {alerts.map((alert, idx) => (
+                            <ListItem key={idx}>
+                                <ListItemText primary={alert} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Paper>
+            </Box>
+        </Container>
     );
 }
