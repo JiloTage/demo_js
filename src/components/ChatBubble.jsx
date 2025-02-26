@@ -19,7 +19,12 @@ export default function ChatBubble({ message, isUser }) {
                     color: isUser ? 'primary.contrastText' : 'black',
                 }}
             >
-                <Typography variant="body1">{message}</Typography>
+                <Typography
+                    variant="body1"
+                    sx={{ whiteSpace: 'pre-line' }} // ここで改行を反映
+                >
+                    {message}
+                </Typography>
             </Paper>
         </Box>
     );
