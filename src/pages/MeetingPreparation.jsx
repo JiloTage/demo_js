@@ -13,34 +13,37 @@ import {
     TableHead,
     TableRow,
     Box,
-    Button
+    Button,
+    Card,
+    CardContent,
 } from '@mui/material';
 import { DashboardContext } from '../contexts/DashboardContext';
 import { useNavigate, Link } from 'react-router-dom';
+import PageTitleBreadcrumb from '../components/PageTitleBreadcrumb';
 
 export default function MeetingPreparation() {
     const navigate = useNavigate();
-    const { addChatMessage, updateLastChatMessage, similarAnalysisResult } = useContext(DashboardContext);
+    const { addChatMessage, updateLastChatMessage, similarAnalysisResult, MemoResult } = useContext(DashboardContext);
     const [displayedRelatedNews, setDisplayedRelatedNews] = useState([]);
 
     // 基本情報のダミーデータ
     const company = {
         name: "株式会社テックソリューションズ",
-        financialInfo: "売上高：120億円、利益率：8.5%、自己資本比率：35%",
+        financialInfo: "売上高：120億円、営業利益10億円、自己資本比率：35%",
         latestNews: [
             "国内市場でのシェア拡大に成功",
             "新製品投入に伴う設備投資増大",
             "海外進出計画が進行中"
         ],
-        bankInfo: "当行との取引実績：20年以上、過去融資実績：80億円",
+        bankInfo: "当行との取引実績：20年以上、平均年間収益1億円",
         meetingInfo: "次回商談予定日：2025年04月10日 10:00～",
-        transactionHistory: "過去3年で融資成約率78%、返済率95%"
+        transactionHistory: "融資実行額50億円・決済XX商品導入"
     };
 
     // 直近の取引・訪問実績（表形式、ダミーデータ）
     const recentRecords = [
         { id: 1, date: "2025-02-20", type: "訪問", summary: "本社で現状ヒアリング実施" },
-        { id: 2, date: "2025-02-25", type: "取引", summary: "融資額40億円契約成立" },
+        { id: 2, date: "2025-02-25", type: "取引", summary: "40億円融資実行" },
         { id: 3, date: "2025-03-01", type: "訪問", summary: "事業計画再検討ミーティング実施" }
     ];
 
@@ -166,8 +169,9 @@ export default function MeetingPreparation() {
 
     return (
         <Container sx={{ mt: 4 }}>
+            <PageTitleBreadcrumb activePhase="meeting-preparation" />
             <Typography variant="h4" gutterBottom>
-                商談準備画面
+                商談準備
             </Typography>
 
             {/* 基本情報ブロック */}
@@ -368,7 +372,19 @@ export default function MeetingPreparation() {
                     CRMの入力
                 </Button>
             </Box>
-
+            {/* フィードバック表示セクション */}
+            {MemoResult && (
+                <Card sx={{ mb: 2, width: 300, height: 300 }} draggable="true">
+                    <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                            売掛金の回収に困っている
+                        </Typography>
+                        <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+                            {MemoResult}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            )}
             <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
                 ※ 各項目をクリックすると、チャットに自動で「〜〜の詳細を説明」と送信され、2秒後にタイピング効果付きで詳細回答が表示されます。
             </Typography>

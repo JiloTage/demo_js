@@ -15,7 +15,8 @@ export default function ChatAssistant() {
         updateLastChatMessage,
         setSimilarAnalysisResult,
         setFeedbackResult,
-        setNegotiationCards
+        setNegotiationCards,
+        setMemoResult
     } = useContext(DashboardContext);
     const location = useLocation();
     const initialMessages = [
@@ -82,7 +83,7 @@ export default function ChatAssistant() {
                     }
                 }, 50);
             }, 2000);
-            aiFullResponse = analysisText;
+            aiFullResponse = "ニーズ分析の結果をページに追加します。";
         } else if (localInput.trim() === "フィードバックして") {
             const feedbackText = [
                 "提案内容や主な議論点、次回アクションが明確に整理されており、商談の概要を把握しやすい良い構成になっています。",
@@ -123,6 +124,26 @@ export default function ChatAssistant() {
                 return sorted;
             });
             aiFullResponse = "商談ピックアップを関連度準にソートしました。";
+        } else if (localInput.trim() === "メモ：売掛金の回収に困っているらしい") {
+            const memoFullText = [
+                "売掛金の回収に困っている",
+                "-> 売掛債権を保証するサービス行うグループ会社を紹介すると良いかもしれない",
+            ].join("\n");
+            setMemoResult("");
+            // 2秒後にタイピング効果でフィードバック文を生成
+            setTimeout(() => {
+                let currentText = "";
+                let i = 0;
+                const interval = setInterval(() => {
+                    currentText += memoFullText[i];
+                    setMemoResult(currentText);
+                    i++;
+                    if (i >= memoFullText.length) {
+                        clearInterval(interval);
+                    }
+                }, 50);
+            }, 2000);
+            aiFullResponse = "メモ欄に追記しました。また、弊社には売掛債権を保証するサービス行うグループ会社が存在しており、お繋ぎしてもいいかもしれません。";
         } else {
             aiFullResponse = "承知しました。引き続きお手伝いします。";
         }

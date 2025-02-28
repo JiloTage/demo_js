@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Typography, Paper, Box, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { DashboardContext } from '../contexts/DashboardContext';
+import PageTitleBreadcrumb from '../components/PageTitleBreadcrumb';
 
 export default function SummaryNextAction() {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function SummaryNextAction() {
 ■ 顧客企業：株式会社テックソリューションズ
 ■ 提案内容：新工場建設に伴う資金調達プランのご提案
 ■ 主な議論点：
-  - 財務状況：直近の決算で売上高は120億円、利益率8.5%、自己資本比率35%と堅調な経営基盤を有する。
+  - 財務状況：直近の決算で売上高は120億円、利益額10億円、自己資本比率35%と堅調な経営基盤を有する。
   - 銀行との取引実績：20年以上の実績、過去融資実績は80億円を超え、信用力は非常に高い。
   - 市場動向：国内景気は回復基調にあり、競合他社と比較しても高成長が期待される。
 ■ 次回アクション：
@@ -63,8 +64,9 @@ export default function SummaryNextAction() {
 
     return (
         <Container sx={{ mt: 4 }}>
+            <PageTitleBreadcrumb activePhase="summary-next-action" />
             <Typography variant="h4" gutterBottom>
-                まとめ・Next Action
+                CRM作成
             </Typography>
             <Paper sx={{ p: 2, mb: 2 }}>
                 <TextField

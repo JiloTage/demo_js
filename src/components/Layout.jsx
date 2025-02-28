@@ -7,7 +7,7 @@ export default function Layout({ children }) {
     return (
         <Box sx={{ display: 'flex', backgroundColor: "#f4f5f7", minHeight: "100vh" }}>
             {/* メインコンテンツエリアは上部に Navbar の高さ分の余白を確保 */}
-            <Box sx={{ flex: 1, marginRight: '420px', padding: "1rem", mt: '64px' }}>
+            <Box sx={{ flex: 1, marginRight: '420px', padding: "1rem", mt: '0px' }}>
                 {children}
             </Box>
             {/* 右側のチャットパネル：top を 0 にして画面の一番上から表示 */}

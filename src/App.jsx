@@ -6,7 +6,6 @@ import Layout from './components/Layout.jsx';
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import MeetingPreparation from './pages/MeetingPreparation.jsx';
-import BusinessMeeting from './pages/BusinessMeeting.jsx';
 import SummaryNextAction from './pages/SummaryNextAction.jsx';
 import MinutesNewFactory from './pages/MinutesNewFactory.jsx';
 import MinutesFunding from './pages/MinutesFunding.jsx';
@@ -32,7 +31,6 @@ export default function App() {
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                     <Route path="/dashboard" element={<Dashboard userName={userName} />} />
                     <Route path="/meeting-preparation" element={<MeetingPreparation />} />
-                    <Route path="/business-meeting" element={<BusinessMeeting />} />
                     <Route path="/summary-next-action" element={<SummaryNextAction />} />
                     <Route path="/minutes/new-factory" element={<MinutesNewFactory />} />
                     <Route path="/minutes/funding" element={<MinutesFunding />} />

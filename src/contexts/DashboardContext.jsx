@@ -17,8 +17,8 @@ export function DashboardProvider({ children }) {
             status: "未着手",
             nextAction: "初回ヒアリング実施",
             importance: "高",
-            storeNumber: "001",
-            customerNumber: "TS-1001",
+            storeNumber: "002",
+            customerNumber: "1001",
             phase: "初回提案準備段階",
             dueDate: "2025-03-15",
             urgent: true,
@@ -32,7 +32,7 @@ export function DashboardProvider({ children }) {
             nextAction: "追加資料送付",
             importance: "中",
             storeNumber: "002",
-            customerNumber: "SS-2002",
+            customerNumber: "2002",
             phase: "ニーズヒヤリング段階",
             dueDate: "2025-03-25",
             urgent: false,
@@ -45,8 +45,8 @@ export function DashboardProvider({ children }) {
             status: "完了",
             nextAction: "フォローアップ実施",
             importance: "低",
-            storeNumber: "003",
-            customerNumber: "GN-3003",
+            storeNumber: "002",
+            customerNumber: "3003",
             phase: "契約締結段階",
             dueDate: "2025-03-20",
             urgent: false,
@@ -70,6 +70,7 @@ export function DashboardProvider({ children }) {
     // 新たに追加：類似企業分析結果のグローバル状態
     const [similarAnalysisResult, setSimilarAnalysisResult] = useState("");
     const [feedbackResult, setFeedbackResult] = useState("");
+    const [MemoResult, setMemoResult] = useState("");
 
     const [alerts, setAlerts] = useState([
         {
@@ -127,6 +128,8 @@ export function DashboardProvider({ children }) {
                 setFeedbackResult,
                 alerts,
                 setAlerts,
+                MemoResult,
+                setMemoResult
             }}
         >
             {children}
