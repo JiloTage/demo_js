@@ -20,8 +20,9 @@ export function DashboardProvider({ children }) {
             storeNumber: "001",
             customerNumber: "TS-1001",
             phase: "初回提案準備段階",
-            dueDate: "2025-03-20",
-            urgent: true
+            dueDate: "2025-03-15",
+            urgent: true,
+            news: 3
         },
         {
             id: 2,
@@ -34,7 +35,8 @@ export function DashboardProvider({ children }) {
             customerNumber: "SS-2002",
             phase: "ニーズヒヤリング段階",
             dueDate: "2025-03-25",
-            urgent: false
+            urgent: false,
+            news: 2
         },
         {
             id: 3,
@@ -46,8 +48,9 @@ export function DashboardProvider({ children }) {
             storeNumber: "003",
             customerNumber: "GN-3003",
             phase: "契約締結段階",
-            dueDate: "2025-03-28",
-            urgent: false
+            dueDate: "2025-03-20",
+            urgent: false,
+            news: 1
         }
     ]);
     const [newsCards, setNewsCards] = useState([
@@ -64,8 +67,28 @@ export function DashboardProvider({ children }) {
     ]);
     const [reportCards, setReportCards] = useState([]);
     const [chatPrefill, setChatPrefill] = useState("");
+    // 新たに追加：類似企業分析結果のグローバル状態
+    const [similarAnalysisResult, setSimilarAnalysisResult] = useState("");
+    const [feedbackResult, setFeedbackResult] = useState("");
 
-    // 新規関数：チャットの最新メッセージを更新する
+    const [alerts, setAlerts] = useState([
+        {
+            id: 1,
+            title: "商談",
+            description: "至急対応が必要な商談があります。優先的に対処してください。",
+        },
+        {
+            id: 2,
+            title: "為替",
+            description: "昨日中に大きな値動きがありました。確認しておきましょう。",
+        },
+        {
+            id: 3,
+            title: "活動計画",
+            description: "前回活動計画を立ててから2ヶ月経過しました。見直しは必要ありませんか？",
+        }
+    ]);
+
     const updateLastChatMessage = (text) => {
         setChatMessages(prev => {
             const updated = [...prev];
@@ -88,6 +111,7 @@ export function DashboardProvider({ children }) {
         <DashboardContext.Provider
             value={{
                 negotiationCards,
+                setNegotiationCards,
                 newsCards,
                 reportCards,
                 setReportCards,
@@ -97,7 +121,12 @@ export function DashboardProvider({ children }) {
                 clearChatMessages,
                 chatPrefill,
                 setChatPrefill,
-                setNegotiationCards
+                similarAnalysisResult,
+                setSimilarAnalysisResult,
+                feedbackResult,
+                setFeedbackResult,
+                alerts,
+                setAlerts,
             }}
         >
             {children}

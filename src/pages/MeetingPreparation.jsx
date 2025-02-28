@@ -20,7 +20,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 export default function MeetingPreparation() {
     const navigate = useNavigate();
-    const { addChatMessage, updateLastChatMessage } = useContext(DashboardContext);
+    const { addChatMessage, updateLastChatMessage, similarAnalysisResult } = useContext(DashboardContext);
     const [displayedRelatedNews, setDisplayedRelatedNews] = useState([]);
 
     // 基本情報のダミーデータ
@@ -255,7 +255,37 @@ export default function MeetingPreparation() {
                 </Table>
             </TableContainer>
 
+            {/* 関連ニュース普通版 */}
+            <Typography variant="h6" gutterBottom>
+                関連ニュース
+            </Typography>
+            <TableContainer component={Paper} sx={{ mb: 2 }}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold' }}>タイトル</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>概要</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {fullRelatedNews.map(news => (
+                            <TableRow
+                                key={news.id}
+                                hover
+                                onClick={() => handleRowClick(news, "関連ニュース")}
+                                style={{ cursor: "pointer" }}
+                            >
+                                <TableCell>{news.title}</TableCell>
+                                <TableCell>{news.description}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+
             {/* 関連ニュース（初期は空、ボタンで表示） */}
+            {/*
             <Typography variant="h6" gutterBottom>
                 関連ニュース
             </Typography>
@@ -289,6 +319,7 @@ export default function MeetingPreparation() {
                     </Table>
                 </TableContainer>
             )}
+                */}
 
             {/* ヒアリング項目（初期は非表示、ボタンで表示） */}
             {showHearingItems ? (
@@ -318,6 +349,17 @@ export default function MeetingPreparation() {
                         ヒアリング項目をAIで生成
                     </Button>
                 </Box>
+            )}
+
+            {similarAnalysisResult && (
+                <Paper sx={{ p: 2, mb: 2 }}>
+                    <Typography variant="h6" gutterBottom>
+                        類似企業分析結果（業種）
+                    </Typography>
+                    <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+                        {similarAnalysisResult}
+                    </Typography>
+                </Paper>
             )}
 
             {/* リンクボタンで MinutesFunding ページへ遷移 */}

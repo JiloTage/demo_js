@@ -6,7 +6,7 @@ import { DashboardContext } from '../contexts/DashboardContext';
 
 export default function SummaryNextAction() {
     const navigate = useNavigate();
-    const { negotiationCards, setNegotiationCards } = useContext(DashboardContext);
+    const { negotiationCards, setNegotiationCards, feedbackResult } = useContext(DashboardContext);
 
     const fullSummary = `【商談まとめ】
 ■ 顧客企業：株式会社テックソリューションズ
@@ -73,8 +73,8 @@ export default function SummaryNextAction() {
                     rows={10}
                     fullWidth
                     variant="outlined"
-                    value={draftText}
-                    onChange={(e) => setDraftText(e.target.value)}
+                    value={fullSummary}
+                // onChange={(e) => setDraftText(e.target.value)}
                 />
             </Paper>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -82,6 +82,17 @@ export default function SummaryNextAction() {
                     CRM提出
                 </Button>
             </Box>
+            {/* フィードバック表示セクション */}
+            {feedbackResult && (
+                <Paper sx={{ p: 2, mb: 2 }}>
+                    <Typography variant="h6" gutterBottom>
+                        フィードバック
+                    </Typography>
+                    <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+                        {feedbackResult}
+                    </Typography>
+                </Paper>
+            )}
         </Container>
     );
 }

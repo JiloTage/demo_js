@@ -6,25 +6,35 @@ import { useLocation } from 'react-router-dom';
 import { DashboardContext } from '../contexts/DashboardContext';
 
 export default function ChatAssistant() {
-    const { chatMessages, addChatMessage, clearChatMessages, chatPrefill, setChatPrefill, updateLastChatMessage } = useContext(DashboardContext);
+    const {
+        chatMessages,
+        addChatMessage,
+        clearChatMessages,
+        chatPrefill,
+        setChatPrefill,
+        updateLastChatMessage,
+        setSimilarAnalysisResult,
+        setFeedbackResult,
+        setNegotiationCards
+    } = useContext(DashboardContext);
     const location = useLocation();
     const initialMessages = [
         { id: 1, text: 'こんにちは、どのようなお手伝いが必要ですか？', isUser: false }
     ];
     const [localInput, setLocalInput] = useState("");
 
-    // 画面遷移に応じたプリフィル設定
     useEffect(() => {
         if (location.pathname === "/dashboard") {
-            setChatPrefill("市場ニュース分析");
+            setChatPrefill("商談を締切でソートして");
         } else if (location.pathname === "/meeting-preparation") {
-            setChatPrefill("関連ニュースを調べて");
+            setChatPrefill("類似企業のニーズを分析して");
+        } else if (location.pathname === "/summary-next-action") {
+            setChatPrefill("フィードバックして");
         } else {
             setChatPrefill("");
         }
     }, [location, setChatPrefill]);
 
-    // chatPrefill が更新されたら localInput に反映
     useEffect(() => {
         setLocalInput(chatPrefill);
     }, [chatPrefill]);
@@ -39,51 +49,84 @@ export default function ChatAssistant() {
             i++;
             if (i >= fullText.length) {
                 clearInterval(interval);
-                callback();
             }
-        }, 50); // 1文字あたり50ms
+        }, 50);
     };
 
     const handleSend = () => {
         if (localInput.trim() === "") return;
         const userMsg = { id: Date.now(), text: localInput, isUser: true };
-        console.log("User message sent:", userMsg);
         addChatMessage(userMsg);
-
         let aiFullResponse = "";
-        if (localInput.includes("市場ニュース分析")) {
-            aiFullResponse = "市場ニュース分析の結果をまとめました。国内景気は回復基調にあり、今後の金融政策見直しが予想されます。";
-        } else if (localInput.includes("ヒアリング項目を出して")) {
-            aiFullResponse = "ヒアリング項目：\n1. 新工場の規模と時期\n2. 必要資金の概算\n3. 既存借入の状況\n4. 将来の海外展開有無";
-        } else if (localInput.includes("同業企業の分析")) {
-            aiFullResponse = "同業企業の分析結果：主要競合の売上高は80〜95億円、成長率は5〜7％。業界平均を上回る傾向が認められます。";
-        } else if (localInput.includes("より詳細な分析")) {
-            aiFullResponse = "詳細分析：複数年度の決算データ、キャッシュフロー、信用評価指標を統合し、リスク要因と成長予測を分析しました。";
-        } else if (localInput.includes("関連ニュースを調べて")) {
-            // 新たなレポートカードとして、関連ニュースのデータを追加
-            const newReport = {
-                id: Date.now(),
-                title: "関連ニュース分析レポート",
-                type: "relatedNews",
-                news: [
-                    { id: 1, title: "金融政策の見直し", description: "最新統計で政府が金融政策の転換を検討中。" },
-                    { id: 2, title: "市場動向の変化", description: "消費者信頼感指数が上昇、景気回復の兆しが見られます。" },
-                    { id: 3, title: "業界再編の兆し", description: "大手企業の合併・買収が進み、業界全体で再編が進行中。" }
-                ],
-                target: "dashboard"
-            };
-            // グローバル状態にレポートカードを追加
-            // ※ DashboardContext の addReportCard 関数を利用する実装が必要
-            // ここでは仮に aiFullResponse として返答
-            aiFullResponse = "関連ニュース分析の結果を追加しました。";
-            // ※ addReportCard(newReport) を実行（実装済み前提）
-            // ここでは addChatMessage でダミーの通知メッセージを送信
-            addChatMessage({ id: Date.now() + 100, text: "【通知】関連ニュース分析のレポートが追加されました。", isUser: false });
+
+        if (localInput.includes("類似企業のニーズを分析して")) {
+            aiFullResponse = "承知しました。類似企業について、どのような観点（業種、事業規模など）で検索しますか？";
+        } else if (localInput.trim() === "業種が近いものについて") {
+            // ニーズ仮説と同じ内容を生成（HTMLタグは除去）
+            const analysisText = [
+                "1. 初期投資効率の改善: 設備投資コストが高いため、効率的な資金運用が求められる。",
+                "2. 返済負担の軽減: 既存借入の返済負担が大きく、条件見直しが必要。",
+                "3. 市場成長性の活用: 業界平均を上回る成長が期待され、さらなる資金調達が可能。"
+            ].join("\n");
+            setSimilarAnalysisResult("");
+            // 2秒後にタイピング効果でフィードバック文を生成
+            setTimeout(() => {
+                let currentText = "";
+                let i = 0;
+                const interval = setInterval(() => {
+                    currentText += analysisText[i];
+                    setSimilarAnalysisResult(currentText);
+                    i++;
+                    if (i >= analysisText.length) {
+                        clearInterval(interval);
+                    }
+                }, 50);
+            }, 2000);
+            aiFullResponse = analysisText;
+        } else if (localInput.trim() === "フィードバックして") {
+            const feedbackText = [
+                "提案内容や主な議論点、次回アクションが明確に整理されており、商談の概要を把握しやすい良い構成になっています。",
+                "以下の項目があるとより網羅的な内容になるかと思います。",
+                "1. 商談の目的・ゴール",
+                "提案や議論の背景となる「本日のゴール」を簡潔に整理しておくと、関係者が同じ認識を持ちやすくなります。",
+                "2. 決定事項（確定内容）と未決事項（懸念点）",
+                "議論点と次回アクションの間に、「確定したこと（合意事項）」と「これから検討が必要なこと」を明確に区分しておくと、後で読み返す際に非常にわかりやすくなります。"
+            ].join("\n");
+            setFeedbackResult("");
+            // 2秒後にタイピング効果でフィードバック文を生成
+            setTimeout(() => {
+                let currentText = "";
+                let i = 0;
+                const interval = setInterval(() => {
+                    currentText += feedbackText[i];
+                    setFeedbackResult(currentText);
+                    i++;
+                    if (i >= feedbackText.length) {
+                        clearInterval(interval);
+                    }
+                }, 50);
+            }, 2000);
+            aiFullResponse = "フィードバックをページに記載します。";
+        } else if (localInput.trim() === "商談を締切でソートして") {
+            // 商談カードを dueDate でソートする（文字列なのでそのまま比較可能）
+            setNegotiationCards(prevCards => {
+                const sorted = [...prevCards].sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+                return sorted;
+            });
+            aiFullResponse = "商談を締切でソートしました。";
+        } else if (localInput.trim() === "このニュースに興味があるお客さんいない？") {
+            aiFullResponse = "株式会社グローバルネットワーク様は過去に関連する取引があり、現在も興味を持たれている可能性があります。\n関連度順に商談をソートしますか？";
+        } else if (localInput.trim() === "はい") {
+            // 商談カードを dueDate でソートする（文字列なのでそのまま比較可能）
+            setNegotiationCards(prevCards => {
+                const sorted = [...prevCards].sort((a, b) => a.dueDate.localeCompare(b.news));
+                return sorted;
+            });
+            aiFullResponse = "商談ピックアップを関連度準にソートしました。";
         } else {
             aiFullResponse = "承知しました。引き続きお手伝いします。";
         }
 
-        // 2秒後にタイピング効果を開始
         setTimeout(() => {
             addChatMessage({ id: Date.now() + 1, text: "", isUser: false });
             simulateTyping(aiFullResponse, () => {
@@ -91,7 +134,7 @@ export default function ChatAssistant() {
             });
         }, 2000);
 
-        setLocalInput(""); // 送信後はクリア
+        setLocalInput("");
     };
 
     return (
